@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <title>KINDLE 时钟</title>
+
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="apple-touch-icon" href="fe-default-avatar.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="黄油猫的 KINDLE 时钟" />
+    <style>
+      /* http://meyerweb.com/eric/tools/css/reset/
+    v2.0 | 20110126
+    License: none (public domain)
+    */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      div,
+      span,
+      applet,
+      object,
+      iframe,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      blockquote,
+      pre,
+      a,
+      abbr,
+      acronym,
+      address,
+      big,
+      cite,
+      code,
+      del,
+      dfn,
+      em,
+      img,
+      ins,
+      kbd,
+      q,
+      s,
+      samp,
+      small,
+      strike,
+      strong,
+      sub,
+      sup,
+      tt,
+      var,
+      b,
+      u,
+      i,
+      center,
+      dl,
+      dt,
+      dd,
+      ol,
+      ul,
+      li,
+      fieldset,
+      form,
+      label,
+      legend,
+      table,
+      caption,
+      tbody,
+      tfoot,
+      thead,
+      tr,
+      th,
+      td,
+      article,
+      aside,
+      canvas,
+      details,
+      embed,
+      figure,
+      figcaption,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      output,
+      ruby,
+      section,
+      summary,
+      time,
+      mark,
+      audio,
+      video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      /* HTML5 display-role reset for older browsers */
+      article,
+      aside,
+      details,
+      figcaption,
+      figure,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+        -webkit-text-size-adjust: 100% !important;
+      }
+      ol,
+      ul {
+        list-style: none;
+      }
+      blockquote,
+      q {
+        quotes: none;
+      }
+      blockquote:before,
+      blockquote:after,
+      q:before,
+      q:after {
+        content: '';
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      input,
+      button {
+        appearance: none;
+        border: none;
+        outline: none;
+      }
+
+      html,
+      body {
+        color: #000000;
+        font-family: sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <style>
+      .page {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .clock {
+        top: 0;
+        height: 30%;
+        font-size: 10rem;
+        font-weight: 700;
+      }
+      .time {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      .calendar {
+        height: 30%;
+        font-size: 5rem;
+      }
+      .city {
+        font-size: 4rem;
+        text-align: center;
+      }
+      .weather {
+        font-size: 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 300;
+      }
+      .condition {
+        width: 100%;
+        text-align: center;
+        font-size: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+      }
+      .condition img {
+        height: 96px;
+      }
+      .aqi {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 2.5rem;
+      }
+    </style>
+
+    <script src="https://cdnjs.gtimg.com/cdnjs/libs/zepto/1.1.4/zepto.min.js"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=7856015b6eafef0a9c3a524cb0fa10d9"></script>
+  </head>
+
+  <body>
+    <div id="page" class="page">
+      <div class="time clock" id="time">LOADING</div>
+      <div class="time calendar" id="date">LOADING</div>
+      <div class="weather" id="weather"></div>
+      <div class="city" id="city">LOADING</div>
+    </div>
+    <script>
+      function formatLocationStr(param) {
+        if (typeof param !== 'string') {
+          return '';
+        }
+        return param;
+      }
+    </script>
+    <script>
+      function request(url, cb) {
+        $.ajax({
+          type: 'GET',
+          url: url,
+          success: function (data) {
+            cb && cb(data);
+          },
+        });
+      }
+      var APIs = {
+        getPoi:
+          'https://geoapi.qweather.com/v2/city/lookup?key=ecde3d59c8c3442cbf7e20d52eca88c1',
+        getWeather:
+          'https://devapi.qweather.com/v7/weather/now?key=ecde3d59c8c3442cbf7e20d52eca88c1',
+        getAQI:
+          'https://devapi.qweather.com/v7/air/now?key=ecde3d59c8c3442cbf7e20d52eca88c1',
+
+        getMotto: '',
+      };
+    </script>
+    <script>
+      var weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      var city, time, date, weather;
+      function formatHour(hour) {
+        if (hour + 8 > 24) {
+          return hour - 16;
+        }
+        return hour + 8;
+      }
+      function formatTen(val) {
+        if (val < 10) {
+          return '0' + val;
+        }
+        return val;
+      }
+      function getTime() {
+        var now = new Date();
+        time =
+          formatTen(formatHour(now.getUTCHours())) +
+          ':' +
+          formatTen(now.getMinutes());
+        date =
+          now.getMonth() +
+          1 +
+          '/' +
+          formatTen(now.getDate()) +
+          ' ' +
+          weekdays[now.getDay()];
+        document.getElementById('time').innerText = time;
+        document.getElementById('date').innerText = date;
+      }
+      function getWeatherInfo(cityId) {
+        var datas = [];
+        request(APIs.getAQI + '&location=' + cityId, function (data) {
+          datas.push(data);
+          request(APIs.getWeather + '&location=' + cityId, function (data) {
+            datas.push(data);
+            weather = {
+              aqi: datas[0].now,
+              base: datas[1].now,
+            };
+            var weatherInfo =
+              '<div class="condition">' +
+              '<img' +
+              ' src="https://clock.buttercatann.com/weather/color-256/' +
+              weather.base.icon +
+              '.png"' +
+              ' alt="' +
+              weather.base.text +
+              '"' +
+              ' class="weather-icon"' +
+              '/>' +
+              '<span>' +
+              weather.base.text +
+              ' 体感:' +
+              weather.base.feelsLike +
+              '&#8451;' +
+              '</span>' +
+              '</div>' +
+              '<div class="aqi">' +
+              'AQI:' +
+              weather.aqi.aqi +
+              ' ' +
+              weather.aqi.category +
+              '</div>';
+
+            document.getElementById('weather').innerHTML = weatherInfo;
+          });
+        });
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        getLocation();
+        getTime();
+        setTimeout(function () {
+          getTime();
+          setInterval(function () {
+            getTime();
+          }, 60 * 1000);
+        }, 60000 - new Date().getSeconds() * 1000);
+        setInterval(function () {
+          getCurrentPos();
+        }, 60 * 30 * 1000);
+      });
+      function getLocation() {
+        AMap.plugin('AMap.CitySearch', function () {
+          var citySearch = new AMap.CitySearch();
+          citySearch.getLocalCity(function (status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              // 查询成功，result即为当前所在城市信息
+              city = result.city;
+              getCurrentPos(formatLocationStr(result.city) || '郑州市');
+            } else {
+              getCurrentPos('郑州市');
+            }
+          });
+        });
+      }
+      function getCurrentPos(currentCity) {
+        var cityName = currentCity || city || '';
+        document.getElementById('city').innerText = cityName;
+        request(APIs.getPoi + '&location=' + cityName, function (data) {
+          if (data.code === '200') {
+            var tempCityId =
+              data.location.length > 0 ? data.location[0].id : '101180101';
+            getWeatherInfo(tempCityId);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
