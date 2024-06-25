@@ -1,379 +1,294 @@
-
 <!DOCTYPE html>
 <html lang="zh-cn">
-  <head>
-    <title>KINDLE 时钟</title>
 
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="apple-touch-icon" href="fe-default-avatar.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="黄油猫的 KINDLE 时钟" />
-    <style>
-      /* http://meyerweb.com/eric/tools/css/reset/
-    v2.0 | 20110126
-    License: none (public domain)
-    */
+<head>
+    <!--设置当前html文件的字符编码 -->
+    <meta charset="utf-8" />
+    <title></title>
 
-      * {
-        box-sizing: border-box;
-      }
+    <!--对kindle的网页进行优化 -->
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 
-      html,
-      body,
-      div,
-      span,
-      applet,
-      object,
-      iframe,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      p,
-      blockquote,
-      pre,
-      a,
-      abbr,
-      acronym,
-      address,
-      big,
-      cite,
-      code,
-      del,
-      dfn,
-      em,
-      img,
-      ins,
-      kbd,
-      q,
-      s,
-      samp,
-      small,
-      strike,
-      strong,
-      sub,
-      sup,
-      tt,
-      var,
-      b,
-      u,
-      i,
-      center,
-      dl,
-      dt,
-      dd,
-      ol,
-      ul,
-      li,
-      fieldset,
-      form,
-      label,
-      legend,
-      table,
-      caption,
-      tbody,
-      tfoot,
-      thead,
-      tr,
-      th,
-      td,
-      article,
-      aside,
-      canvas,
-      details,
-      embed,
-      figure,
-      figcaption,
-      footer,
-      header,
-      hgroup,
-      menu,
-      nav,
-      output,
-      ruby,
-      section,
-      summary,
-      time,
-      mark,
-      audio,
-      video {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        font-size: 100%;
-        font: inherit;
-        vertical-align: baseline;
-      }
-      /* HTML5 display-role reset for older browsers */
-      article,
-      aside,
-      details,
-      figcaption,
-      figure,
-      footer,
-      header,
-      hgroup,
-      menu,
-      nav,
-      section {
-        display: block;
-      }
-      body {
-        line-height: 1;
-        -webkit-text-size-adjust: 100% !important;
-      }
-      ol,
-      ul {
-        list-style: none;
-      }
-      blockquote,
-      q {
-        quotes: none;
-      }
-      blockquote:before,
-      blockquote:after,
-      q:before,
-      q:after {
-        content: '';
-        content: none;
-      }
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-      }
+    <!--引入CSS样式表 -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
-      input,
-      button {
-        appearance: none;
-        border: none;
-        outline: none;
-      }
-
-      html,
-      body {
-        color: #000000;
-        font-family: sans-serif;
-        background-color: #ffffff;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-    <style>
-      .page {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .clock {
-        top: 0;
-        height: 30%;
-        font-size: 10rem;
-        font-weight: 700;
-      }
-      .time {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
-
-      .calendar {
-        height: 30%;
-        font-size: 5rem;
-      }
-      .city {
-        font-size: 4rem;
-        text-align: center;
-      }
-      .weather {
-        font-size: 4rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-weight: 300;
-      }
-      .condition {
-        width: 100%;
-        text-align: center;
-        font-size: 3rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 40px;
-      }
-      .condition img {
-        height: 96px;
-      }
-      .aqi {
-        text-align: center;
-        margin-top: 30px;
-        font-size: 2.5rem;
-      }
-    </style>
-
+    <!--黄油猫天气预报 -->
     <script src="https://cdnjs.gtimg.com/cdnjs/libs/zepto/1.1.4/zepto.min.js"></script>
+
+    <!--黄油猫地理位置 -->
     <script src="https://webapi.amap.com/maps?v=1.4.15&key=7856015b6eafef0a9c3a524cb0fa10d9"></script>
-  </head>
 
-  <body>
-    <div id="page" class="page">
-      <div class="time clock" id="time">LOADING</div>
-      <div class="time calendar" id="date">LOADING</div>
-      <div class="weather" id="weather"></div>
-      <div class="city" id="city">LOADING</div>
+
+
+</head>
+
+<!-- 去除页面滚动条  -->
+
+<body scroll="no">
+
+    <div class="page light">
+        <div id="log_container"> </div>
+        <div id="top">
+            <div class="weibo_container" style="display: block">
+                <div class="weibo_title"></div>
+                <div class="hot_list">
+                    <ul id="hot_word"></ul>
+                    <ul id="hot_word_num"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="middle">
+            <div id="time_container">
+                <div class="time" id="time">LOADING</div>
+                <div class="date" id="date">LOADING</div>
+            </div>
+        </div>
+
+        <div id="bottom">
+            <div class="nonebtm_container"></div>
+            <div class="weather_container" style="display: block;"> <!-- 隐藏  -->
+                <div class="weaWrapper">
+                    <div id="weather"></div>
+                    <div id="city">LOADING</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <script>
-      function formatLocationStr(param) {
-        if (typeof param !== 'string') {
-          return '';
-        }
-        return param;
-      }
-    </script>
-    <script>
-      function request(url, cb) {
-        $.ajax({
-          type: 'GET',
-          url: url,
-          success: function (data) {
-            cb && cb(data);
-          },
-        });
-      }
-      var APIs = {
-        getPoi:
-          'https://geoapi.qweather.com/v2/city/lookup?key=ecde3d59c8c3442cbf7e20d52eca88c1',
-        getWeather:
-          'https://devapi.qweather.com/v7/weather/now?key=ecde3d59c8c3442cbf7e20d52eca88c1',
-        getAQI:
-          'https://devapi.qweather.com/v7/air/now?key=ecde3d59c8c3442cbf7e20d52eca88c1',
 
-        getMotto: '',
-      };
-    </script>
-    <script>
-      var weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-      var city, time, date, weather;
-      function formatHour(hour) {
-        if (hour + 8 > 24) {
-          return hour - 16;
-        }
-        return hour + 8;
-      }
-      function formatTen(val) {
-        if (val < 10) {
-          return '0' + val;
-        }
-        return val;
-      }
-      function getTime() {
-        var now = new Date();
-        time =
-          formatTen(formatHour(now.getUTCHours())) +
-          ':' +
-          formatTen(now.getMinutes());
-        date =
-          now.getMonth() +
-          1 +
-          '/' +
-          formatTen(now.getDate()) +
-          ' ' +
-          weekdays[now.getDay()];
-        document.getElementById('time').innerText = time;
-        document.getElementById('date').innerText = date;
-      }
-      function getWeatherInfo(cityId) {
-        var datas = [];
-        request(APIs.getAQI + '&location=' + cityId, function (data) {
-          datas.push(data);
-          request(APIs.getWeather + '&location=' + cityId, function (data) {
-            datas.push(data);
-            weather = {
-              aqi: datas[0].now,
-              base: datas[1].now,
-            };
-            var weatherInfo =
-              '<div class="condition">' +
-              '<img' +
-              ' src="https://clock.buttercatann.com/weather/color-256/' +
-              weather.base.icon +
-              '.png"' +
-              ' alt="' +
-              weather.base.text +
-              '"' +
-              ' class="weather-icon"' +
-              '/>' +
-              '<span>' +
-              weather.base.text +
-              ' 体感:' +
-              weather.base.feelsLike +
-              '&#8451;' +
-              '</span>' +
-              '</div>' +
-              '<div class="aqi">' +
-              'AQI:' +
-              weather.aqi.aqi +
-              ' ' +
-              weather.aqi.category +
-              '</div>';
+    <!-----------------------------------------------脚本开始--------------------------------------------------------->
 
-            document.getElementById('weather').innerHTML = weatherInfo;
-          });
-        });
-      }
-      document.addEventListener('DOMContentLoaded', function () {
-        getLocation();
-        getTime();
-        setTimeout(function () {
-          getTime();
-          setInterval(function () {
-            getTime();
-          }, 60 * 1000);
-        }, 60000 - new Date().getSeconds() * 1000);
-        setInterval(function () {
-          getCurrentPos();
-        }, 60 * 30 * 1000);
-      });
-      function getLocation() {
-        AMap.plugin('AMap.CitySearch', function () {
-          var citySearch = new AMap.CitySearch();
-          citySearch.getLocalCity(function (status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-              // 查询成功，result即为当前所在城市信息
-              city = result.city;
-              getCurrentPos(formatLocationStr(result.city) || '郑州市');
-            } else {
-              getCurrentPos('郑州市');
+    <script>
+        /*  XMLHttpRequest在 Web 浏览器和 Web 服务器之间传输数据,主要用于 AJAX 编程.
+            AJAX 代表异步 JavaScript 和 XML。它使用多种 Web 技术在客户端开发异步 Web 应用程序。
+            可以使用 AJAX 在后台将数据发送到 Web 服务器。页面加载后，可以从 Web 服务器读取数据并使用 AJAX 而无需重新加载。
+            我们也可以更新网页。
+                
+                 */
+        // 创建XMLHttpRequest对象
+        function createXHR() {
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
-          });
+            return xhr;
+        }
+
+
+        // 微博热搜模块
+        function weibo() {
+            var xhr = createXHR();
+            xhr.open("GET", "https://v2.alapi.cn/api/new/wbtop?token=buYvmQLH4AS8W1V4&num=4", true);
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    var data = JSON.parse(this.responseText);
+                    var hots = data.data;
+                    var hot_word = document.getElementById("hot_word");
+                    var hot_word_num = document.getElementById("hot_word_num");
+                    hot_word.innerHTML = "";
+                    hot_word_num.innerHTML = "";
+                    for (var i = 0; i < hots.length; i++) {
+                        var index = i + 1;
+                        hot_word.innerHTML += "<li>" + index + ". " + hots[i].hot_word + "</li>";
+                        hot_word_num.innerHTML += "<li>" + hots[i].hot_word_num + "</li>";
+                    }
+                }
+            };
+            xhr.send(null);
+        }
+
+        weibo();
+        setInterval("weibo()", 60 * 1000 * 20);
+
+
+
+        /*        // 时钟模块
+               function clock() {
+                   var date = new Date();
+                   var utc8DiffMinutes = date.getTimezoneOffset() + 480;
+                   date.setMinutes(date.getMinutes() + utc8DiffMinutes);
+       
+                   var hour = date.getHours();
+       
+                   var timeString = hour + ":" + ("0" + date.getMinutes()).slice(-2);
+                   var dateString = date.getMonth() + 1 + "月" + date.getDate() + "日";
+                   var weekList = ["日", "一", "二", "三", "四", "五", "六"];
+                   var weekString = "星期" + weekList[date.getDay()];
+       
+                   document.getElementById("time").innerHTML = timeString;
+                   document.getElementById("date").innerHTML =
+                       dateString + " " + weekString;
+       
+               }
+               clock();
+               setInterval("clock()", 10 * 1000);   //定时函数，以毫秒为单位，原始值60 */
+
+
+
+        var weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        var city, time, date, weather;
+        function formatHour(hour) {
+            if (hour + 8 > 24) {
+                return hour - 16;
+            }
+            return hour + 8;
+        }
+        function formatTen(val) {
+            if (val < 10) {
+                return '0' + val;
+            }
+            return val;
+        }
+
+
+        // 天气模块，来自黄油猫的 KINDLE 时钟 https://clock.buttercatann.com
+
+        //有用，删除天气汇无法显示
+        function formatLocationStr(param) {
+            if (typeof param !== 'string') {
+                return '';
+            }
+            return param;
+        }
+
+        //一个异步获取的方法
+        function request(url, cb) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (data) {
+                    cb && cb(data);
+                },
+            });
+        }
+
+        //api的地址
+        var APIs = {
+            //和风天气，热门城市查询api https://dev.qweather.com/docs/api/geoapi/top-city/
+            getPoi:
+                'https://geoapi.qweather.com/v2/city/lookup?key=1caa775a503749338ab703e6c102a98a',
+            //和风天气，获取天气信息api https://dev.qweather.com/docs/api/weather/weather-now/
+            getWeather:
+                'https://devapi.qweather.com/v7/weather/now?key=1caa775a503749338ab703e6c102a98a',
+            //和风天气，获取空气质量 https://dev.qweather.com/docs/api/air/air-now/
+            getAQI:
+                'https://devapi.qweather.com/v7/air/now?key=1caa775a503749338ab703e6c102a98a',
+
+            getMotto: '',
+        };
+
+
+        function getTime() {
+            var now = new Date();
+            time =
+                formatTen(formatHour(now.getUTCHours())) +
+                ':' +
+                formatTen(now.getMinutes());
+            date =
+                now.getMonth() +
+                1 +
+                '/' +
+                formatTen(now.getDate()) +
+                ' ' +
+                weekdays[now.getDay()];
+            document.getElementById('time').innerText = time;
+            document.getElementById('date').innerText = date;
+        }
+
+
+        //通过api获取天气数据
+        function getWeatherInfo(cityId) {
+            var datas = [];
+            request(APIs.getAQI + '&location=' + cityId, function (data) {
+                datas.push(data);
+                request(APIs.getWeather + '&location=' + cityId, function (data) {
+                    datas.push(data);
+                    weather = {
+                        aqi: datas[0].now,
+                        base: datas[1].now,
+                    };
+                    var weatherInfo =
+                        '<div class="condition">' +
+                        '<img' +
+                        ' src="http://192.168.200.200/kindle7/color-256/' +
+                        weather.base.icon +
+                        '.png"' +
+                        ' alt="' +
+                        weather.base.text +
+                        '"' +
+                        ' class="weather-icon"' +
+                        '/>' +
+                        '<span>' +
+                        weather.base.text +
+                        ' 体感:' +
+                        weather.base.feelsLike +
+                        '&#8451;' +
+                        '</span>' +
+                        '</div>' +
+                        '<div class="aqi">' +
+                        'AQI:' +
+                        weather.aqi.aqi +
+                        ' ' +
+                        weather.aqi.category +
+                        '</div>';
+
+                    document.getElementById('weather').innerHTML = weatherInfo;
+                });
+            });
+        }
+
+
+        //定期通过DOM获取数据?
+        document.addEventListener('DOMContentLoaded', function () {
+            getLocation();
+            getTime();
+            setTimeout(function () {
+                getTime();
+                setInterval(function () {
+                    getTime();
+                }, 60 * 1000);
+            }, 60000 - new Date().getSeconds() * 1000);
+            setInterval(function () {
+                getCurrentPos();
+            }, 60 * 30 * 1000);
         });
-      }
-      function getCurrentPos(currentCity) {
-        var cityName = currentCity || city || '';
-        document.getElementById('city').innerText = cityName;
-        request(APIs.getPoi + '&location=' + cityName, function (data) {
-          if (data.code === '200') {
-            var tempCityId =
-              data.location.length > 0 ? data.location[0].id : '101180101';
-            getWeatherInfo(tempCityId);
-          }
-        });
-      }
+
+
+        function getLocation() {
+            AMap.plugin('AMap.CitySearch', function () {
+                var citySearch = new AMap.CitySearch();
+                citySearch.getLocalCity(function (status, result) {
+                    if (status === 'complete' && result.info === 'OK') {
+                        // 查询成功，result即为当前所在城市信息
+                        city = result.city;
+                        //console.log(city); 能返回杭州市
+
+                        getCurrentPos(formatLocationStr(result.city) || '郑州市');
+                    } else {
+                        getCurrentPos('郑州市');
+                    }
+                });
+            });
+        }
+
+        function getCurrentPos(currentCity) {
+            var cityName = currentCity || city || '';
+            document.getElementById('city').innerText = cityName;
+            request(APIs.getPoi + '&location=' + cityName, function (data) {
+                if (data.code === '200') {
+                    var tempCityId =
+                        data.location.length > 0 ? data.location[0].id : '101180101';
+                    getWeatherInfo(tempCityId);
+                }
+            });
+        }
+
     </script>
-  </body>
+
+</body>
+
 </html>
